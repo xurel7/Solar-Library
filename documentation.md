@@ -17,6 +17,13 @@ local UI = SolarLib:Create {
 }
 ```
 
+## Updating the UI Toggle Keybind
+```lua
+SolarLib:UpdateKeybind {
+  Keybind = Enum.KeyCode.RightControl -- Make sure its in keycode form, or else this wont work.
+}
+```
+
 ## Creating a Page
 ```lua
 local Page1 = UI:CreatePage { -- Make sure to assign a new variable name for each page you create.
@@ -106,7 +113,7 @@ Page1:CreateKeybindButton {
 ## Creating a Keybind Toggle
 ```lua
 Page1:CreateKeybindToggle {
-  Name = "A Keybind Button", -- The name of your keybind toggle.
+  Name = "A Keybind Toggle", -- The name of your keybind toggle.
   Flag = nil, -- You can leave nil or simply delete if you dont have multiple elements with the same name or your UI doesnt save. If you have multiple elements with the same name, make sure to give each one a different flag as it will cause save overlapping if you dont.
   Callback = function ()
     -- You would put the code you want to be ran here.
