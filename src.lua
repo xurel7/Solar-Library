@@ -28,6 +28,8 @@ if RunService:IsStudio() then
 	Par = LocalPlayer:WaitForChild("PlayerGui")
 end
 
+local ToggleKeybind = Enum.KeyCode.RightControl
+
 function MakeFolder(name)
 	name = tostring(name)
 	if RunService:IsStudio() or not makefolder or not isfolder then return end
@@ -89,6 +91,15 @@ function Library:Validate(defaults, options)
 		end
 	end
 	return options
+end
+
+function Library:UpdateKeybing(options)
+	if not options then options = {} end
+	Library:Validate({
+		Keybind = Enum.KeyCode.RightControl
+	},options or {})
+
+	ToggleKeybind = options["Keybind"]
 end
 
 function Library:Create(options)
@@ -234,7 +245,7 @@ function Library:Create(options)
 	UI["c"]["TextScaled"] = true;
 	UI["c"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
 	UI["c"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-	UI["c"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+	UI["c"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 	UI["c"]["TextSize"] = 14;
 	UI["c"]["TextColor3"] = Color3.fromRGB(241, 241, 241);
 	UI["c"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
@@ -289,7 +300,7 @@ function Library:Create(options)
 	UI["17"]["BorderSizePixel"] = 0;
 	UI["17"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
 	UI["17"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-	UI["17"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+	UI["17"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 	UI["17"]["TextSize"] = 14;
 	UI["17"]["TextColor3"] = Color3.fromRGB(221, 221, 221);
 	UI["17"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
@@ -401,7 +412,7 @@ function Library:Create(options)
 			end
 		end
 	end)
-
+	local destroyed = false
 	Hide.MouseEnter:Connect(function()
 		TweenService:Create(Hide,TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {ImageTransparency = 0}):Play()
 	end)
@@ -420,7 +431,22 @@ function Library:Create(options)
 		UI["1"].Enabled = false
 	end)
 	Close.MouseButton1Down:Connect(function()
+		destroyed = true
 		UI["1"]:Destroy()
+
+	end)
+
+	UserInputService.InputBegan:Connect(function(input,gpe)
+		if gpe or not ToggleKeybind or ToggleKeybind == nil or destroyed == true then return end
+		pcall(function()
+			if input.KeyCode == ToggleKeybind then
+				if UI["1"].Enabled == true then
+					UI["1"].Enabled = false
+				else
+					UI["1"].Enabled = true
+				end
+			end
+		end)
 	end)
 
 	function UI:CreatePage(options)
@@ -439,7 +465,7 @@ function Library:Create(options)
 		Page["13"]["TextScaled"] = true;
 		Page["13"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
 		Page["13"]["TextSize"] = 14;
-		Page["13"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+		Page["13"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 		Page["13"]["TextColor3"] = Color3.fromRGB(221, 221, 221);
 		Page["13"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
 		Page["13"]["Size"] = UDim2.new(1, 0, 0, 13);
@@ -579,7 +605,7 @@ function Library:Create(options)
 			Button["24"]["TextScaled"] = true;
 			Button["24"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
 			Button["24"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-			Button["24"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+			Button["24"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 			Button["24"]["TextSize"] = 14;
 			Button["24"]["TextColor3"] = Color3.fromRGB(241, 241, 241);
 			Button["24"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
@@ -597,7 +623,7 @@ function Library:Create(options)
 			Button["25"]["TextScaled"] = true;
 			Button["25"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
 			Button["25"]["TextXAlignment"] = Enum.TextXAlignment.Right;
-			Button["25"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+			Button["25"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 			Button["25"]["TextTransparency"] = 0.8999999761581421;
 			Button["25"]["TextSize"] = 14;
 			Button["25"]["TextColor3"] = Color3.fromRGB(241, 241, 241);
@@ -631,6 +657,10 @@ function Library:Create(options)
 
 			local RealButton = Button["21"]
 			local ElementIndicator = Button["25"]
+			local Title = Button["24"]
+
+			Title.Text = options["Name"]
+			RealButton.Name = options["Name"]..tostring(math.random(1,99999999))
 
 			RealButton.MouseEnter:Connect(function()
 				TweenService:Create(RealButton, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(40,40,40)}):Play()
@@ -646,7 +676,7 @@ function Library:Create(options)
 				AddRipple(RealButton,Color3.fromRGB(255,255,255))
 				coroutine.wrap(function()
 					local succ, err = pcall(options["Callback"])
-					if err then
+					if not succ then
 						print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
 					end
 				end)()
@@ -697,7 +727,7 @@ function Library:Create(options)
 			ToggleParts["2b"]["TextScaled"] = true;
 			ToggleParts["2b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
 			ToggleParts["2b"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-			ToggleParts["2b"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+			ToggleParts["2b"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 			ToggleParts["2b"]["TextSize"] = 14;
 			ToggleParts["2b"]["TextColor3"] = Color3.fromRGB(241, 241, 241);
 			ToggleParts["2b"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
@@ -786,6 +816,7 @@ function Library:Create(options)
 			local Title = ToggleParts["2b"]
 
 			Title.Text = options["Name"]
+			ToggleButton.Name = options["Name"]..tostring(math.random(1,99999999))
 
 			local Enabled = false
 			local Debounce = false
@@ -845,7 +876,7 @@ function Library:Create(options)
 						if ScriptDebounce == true then return end
 						ScriptDebounce = true
 						local succ, err = pcall(options["Callback"])
-						if err then
+						if not succ then
 							print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
 							Enabled = false
 							local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
@@ -864,7 +895,7 @@ function Library:Create(options)
 				end
 				coroutine.wrap(function()
 					local succ, err = pcall(options["CallbackEnd"])
-					if err then
+					if not succ then
 						print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
 					end
 					WaitingForEnd = false
@@ -873,58 +904,66 @@ function Library:Create(options)
 			end)
 
 			if SaveFolder ~= nil then
-				coroutine.wrap(function()
-					local info = GetInfo(SaveFolder.."/"..Flag)
-					if info == true or info == "true" then
-						Enabled = true
-						TweenService:Create(ToggleCircleStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{Color = Color3.fromRGB(0, 170, 255)}):Play()
-						TweenService:Create(ToggleCircle, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(0, 146, 214)}):Play()
-						TweenService:Create(ToggleCircle, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, 12,0.5, 0)}):Play()
+				local succ, err = pcall(function()
+					coroutine.wrap(function()
+						local info = GetInfo(SaveFolder.."/"..Flag)
+						if info == true or info == "true" then
+							Enabled = true
+							TweenService:Create(ToggleCircleStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{Color = Color3.fromRGB(0, 170, 255)}):Play()
+							TweenService:Create(ToggleCircle, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(0, 146, 214)}):Play()
+							TweenService:Create(ToggleCircle, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, 12,0.5, 0)}):Play()
 
-						coroutine.wrap(function()
-							local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
-							Tween:Play()
-							Tween.Completed:Wait()
-							local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)})
-							Tween:Play()
-							Tween.Completed:Wait()
-							Debounce = false
-							if Enabled == false then
-								return
-							end
-						end)()
-
-						repeat RunService.RenderStepped:Wait()
 							coroutine.wrap(function()
-								if ScriptDebounce == true then return end
-								ScriptDebounce = true
-								local succ, err = pcall(options["Callback"])
-								if err then
-									print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
-									Enabled = false
-									local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
-									Tween:Play()
-									Tween.Completed:Wait()
-									local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)})
-									Tween:Play()
+								local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
+								Tween:Play()
+								Tween.Completed:Wait()
+								local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)})
+								Tween:Play()
+								Tween.Completed:Wait()
+								Debounce = false
+								if Enabled == false then
+									return
 								end
-								ScriptDebounce = false
 							end)()
-						until Enabled ~= true or not Page["1e"]:FindFirstChild(ToggleButton.Name)
-						if WaitingForEnd == true then return end -- make sure its not yielding for script to end already
-						WaitingForEnd = true
-						if ScriptDebounce == true then
-							repeat task.wait() until ScriptDebounce ~= true -- ensure that script has ended when calling the end script
-						end
-						coroutine.wrap(function()
-							local succ, err = pcall(options["CallbackEnd"])
-							if err then
-								print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+
+							repeat RunService.RenderStepped:Wait()
+								coroutine.wrap(function()
+									if ScriptDebounce == true then return end
+									ScriptDebounce = true
+									local succ, err = pcall(options["Callback"])
+									if not succ then
+										print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+										Enabled = false
+										local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
+										Tween:Play()
+										Tween.Completed:Wait()
+										local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)})
+										Tween:Play()
+									end
+									ScriptDebounce = false
+								end)()
+							until Enabled ~= true or not Page["1e"]:FindFirstChild(ToggleButton.Name)
+							if WaitingForEnd == true then return end -- make sure its not yielding for script to end already
+							WaitingForEnd = true
+							if ScriptDebounce == true then
+								repeat task.wait() until ScriptDebounce ~= true -- ensure that script has ended when calling the end script
 							end
-							WaitingForEnd = false
-						end)()
-					end
-				end)()
+							coroutine.wrap(function()
+								local succ, err = pcall(options["CallbackEnd"])
+								if not succ then
+									print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+								end
+								WaitingForEnd = false
+							end)()
+						end
+					end)()
+				end)
+				if not succ then
+					pcall(function()
+						print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						delfolder(SaveFolder) -- wipe save if data is corrupted
+					end)
+				end
 			end
 		end
 
@@ -972,7 +1011,7 @@ function Library:Create(options)
 			PageParts["39"]["TextScaled"] = true;
 			PageParts["39"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
 			PageParts["39"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-			PageParts["39"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+			PageParts["39"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 			PageParts["39"]["TextSize"] = 14;
 			PageParts["39"]["TextColor3"] = Color3.fromRGB(241, 241, 241);
 			PageParts["39"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
@@ -1009,7 +1048,7 @@ function Library:Create(options)
 			PageParts["3c"]["TextSize"] = 14;
 			PageParts["3c"]["BackgroundColor3"] = Color3.fromRGB(31, 31, 31);
 			PageParts["3c"]["TextColor3"] = Color3.fromRGB(241, 241, 241);
-			PageParts["3c"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+			PageParts["3c"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 			PageParts["3c"]["AnchorPoint"] = Vector2.new(1, 0.5);
 			PageParts["3c"]["PlaceholderText"] = [[Input Placeholder]];
 			PageParts["3c"]["Size"] = UDim2.new(0, 141, 0, 30);
@@ -1058,14 +1097,23 @@ function Library:Create(options)
 			local InputBox = PageParts["3c"]
 
 			Title.Text = options["Name"]
+			InputButton.Name = options["Name"]..tostring(math.random(1,99999999))
 			InputBox.PlaceholderText = options["PlaceholderText"]
 			InputBox.Size = UDim2.new(0, InputBox.TextBounds.X + 24, 0, 30)
 
 			if SaveFolder ~= nil then
-				local info = GetInfo(SaveFolder.."/"..Flag)
-				if info then
-					InputBox.Text = info
-					InputBox.Size = UDim2.new(0, InputBox.TextBounds.X + 24, 0, 30)
+				local succ, err = pcall(function()
+					local info = GetInfo(SaveFolder.."/"..Flag)
+					if info then
+						InputBox.Text = info
+						InputBox.Size = UDim2.new(0, InputBox.TextBounds.X + 24, 0, 30)
+					end
+				end)
+				if not succ then
+					pcall(function()
+						print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						delfolder(SaveFolder) -- wipe save if data is corrupted
+					end)
 				end
 			end
 
@@ -1090,7 +1138,7 @@ function Library:Create(options)
 				AddRipple(InputButton,Color3.fromRGB(255,255,255))
 				coroutine.wrap(function()
 					local succ, err = pcall(options["Callback"])
-					if err then
+					if not succ then
 						print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
 					end
 				end)()
@@ -1172,7 +1220,7 @@ function Library:Create(options)
 			LabelParts["62"]["BorderSizePixel"] = 0;
 			LabelParts["62"]["TextScaled"] = true;
 			LabelParts["62"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-			LabelParts["62"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+			LabelParts["62"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 			LabelParts["62"]["TextSize"] = 14;
 			LabelParts["62"]["TextColor3"] = Color3.fromRGB(241, 241, 241);
 			LabelParts["62"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
@@ -1207,6 +1255,7 @@ function Library:Create(options)
 			local Title = LabelParts["62"]
 
 			Title.Text = options["Text"]
+			Label.Name = options["Text"]..tostring(math.random(1,99999999))
 
 			Label.MouseEnter:Connect(function()
 				TweenService:Create(Label, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(53,115,169)}):Play()
@@ -1267,7 +1316,7 @@ function Library:Create(options)
 			HeaderParts["6a"]["TextScaled"] = true;
 			HeaderParts["6a"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
 			HeaderParts["6a"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-			HeaderParts["6a"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+			HeaderParts["6a"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 			HeaderParts["6a"]["TextSize"] = 14;
 			HeaderParts["6a"]["TextColor3"] = Color3.fromRGB(241, 241, 241);
 			HeaderParts["6a"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
@@ -1284,6 +1333,7 @@ function Library:Create(options)
 			local Title = HeaderParts["6a"]
 
 			Title.Text = options["Text"]
+			Header.Name = options["Text"]..tostring(math.random(1,99999999))
 
 			Header.MouseEnter:Connect(function()
 				TweenService:Create(Header, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(53,115,169)}):Play()
@@ -1342,7 +1392,7 @@ function Library:Create(options)
 			InputToggleParts["4f"]["TextScaled"] = true;
 			InputToggleParts["4f"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
 			InputToggleParts["4f"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-			InputToggleParts["4f"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+			InputToggleParts["4f"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 			InputToggleParts["4f"]["TextSize"] = 14;
 			InputToggleParts["4f"]["TextColor3"] = Color3.fromRGB(241, 241, 241);
 			InputToggleParts["4f"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
@@ -1430,7 +1480,7 @@ function Library:Create(options)
 			InputToggleParts["5a"]["TextSize"] = 14;
 			InputToggleParts["5a"]["BackgroundColor3"] = Color3.fromRGB(31, 31, 31);
 			InputToggleParts["5a"]["TextColor3"] = Color3.fromRGB(241, 241, 241);
-			InputToggleParts["5a"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+			InputToggleParts["5a"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 			InputToggleParts["5a"]["AnchorPoint"] = Vector2.new(1, 0.5);
 			InputToggleParts["5a"]["PlaceholderText"] = [[Input Placeholder]];
 			InputToggleParts["5a"]["Size"] = UDim2.new(0, 141, 0, 30);
@@ -1484,6 +1534,8 @@ function Library:Create(options)
 			local WaitingForEnd = false
 
 			Title.Text = options["Name"]
+			InputToggleButton.Name = options["Name"]..tostring(math.random(1,99999999))
+
 			InputTextBox.PlaceholderText = options["PlaceholderText"]
 			InputTextBox.Size = UDim2.new(0, InputTextBox.TextBounds.X + 24, 0, 30)
 
@@ -1547,7 +1599,7 @@ function Library:Create(options)
 						if ScriptDebounce == true then return end
 						ScriptDebounce = true
 						local succ, err = pcall(options["Callback"])
-						if err then
+						if not succ then
 							print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
 							Enabled = false
 							local Tween = TweenService:Create(TogglePart, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
@@ -1566,7 +1618,7 @@ function Library:Create(options)
 				end
 				coroutine.wrap(function()
 					local succ, err = pcall(options["CallbackEnd"])
-					if err then
+					if not succ then
 						print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
 					end
 					WaitingForEnd = false
@@ -1629,65 +1681,73 @@ function Library:Create(options)
 			end
 
 			if SaveFolder ~= nil then
-				local info = GetInfo(SaveFolder.."/"..Flag)
-				if not info then return end
-				local spl = string.split(info, "⎧⎨")
-				local toggleVal = spl[1]
-				local inputVal = spl[2]
-				if not toggleVal and not inputVal then return end
-				coroutine.wrap(function()
-				if toggleVal == "true" or toggleVal == true then
+				local succ, err = pcall(function()
+					local info = GetInfo(SaveFolder.."/"..Flag)
+					if not info then return end
+					local spl = string.split(info, "⎧⎨")
+					local toggleVal = spl[1]
+					local inputVal = spl[2]
+					if not toggleVal and not inputVal then return end
+					coroutine.wrap(function()
+						if toggleVal == "true" or toggleVal == true then
 
-						Enabled = true
-						TweenService:Create(TogglePartStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{Color = Color3.fromRGB(0, 170, 255)}):Play()
-						TweenService:Create(TogglePart, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(0, 146, 214)}):Play()
-						TweenService:Create(TogglePart, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, 12,0.5, 0)}):Play()
+							Enabled = true
+							TweenService:Create(TogglePartStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{Color = Color3.fromRGB(0, 170, 255)}):Play()
+							TweenService:Create(TogglePart, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(0, 146, 214)}):Play()
+							TweenService:Create(TogglePart, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, 12,0.5, 0)}):Play()
 
-						coroutine.wrap(function()
-							local Tween = TweenService:Create(TogglePart, TweenInfo.new(0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
-							Tween:Play()
-							Tween.Completed:Wait()
-							local Tween = TweenService:Create(TogglePart, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)})
-							Tween:Play()
-							Tween.Completed:Wait()
-							if Enabled == false then
-								return
-							end
-						end)()
-						repeat RunService.RenderStepped:Wait()
 							coroutine.wrap(function()
-								if ScriptDebounce == true then return end
-								ScriptDebounce = true
-								local succ, err = pcall(options["Callback"])
-								if err then
-									print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
-									Enabled = false
-									local Tween = TweenService:Create(TogglePart, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
-									Tween:Play()
-									Tween.Completed:Wait()
-									local Tween = TweenService:Create(TogglePart, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)})
-									Tween:Play()
+								local Tween = TweenService:Create(TogglePart, TweenInfo.new(0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
+								Tween:Play()
+								Tween.Completed:Wait()
+								local Tween = TweenService:Create(TogglePart, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)})
+								Tween:Play()
+								Tween.Completed:Wait()
+								if Enabled == false then
+									return
 								end
-								ScriptDebounce = false
 							end)()
-						until Enabled ~= true or not Page["1e"]:FindFirstChild(InputToggleButton.Name)
-						if WaitingForEnd == true then return end -- make sure its not yielding for script to end already
-						WaitingForEnd = true
-						if ScriptDebounce == true then
-							repeat task.wait() until ScriptDebounce ~= true -- ensure that script has ended when calling the end script
-						end
-						coroutine.wrap(function()
-							local succ, err = pcall(options["CallbackEnd"])
-							if err then
-								print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+							repeat RunService.RenderStepped:Wait()
+								coroutine.wrap(function()
+									if ScriptDebounce == true then return end
+									ScriptDebounce = true
+									local succ, err = pcall(options["Callback"])
+									if not succ then
+										print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+										Enabled = false
+										local Tween = TweenService:Create(TogglePart, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
+										Tween:Play()
+										Tween.Completed:Wait()
+										local Tween = TweenService:Create(TogglePart, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)})
+										Tween:Play()
+									end
+									ScriptDebounce = false
+								end)()
+							until Enabled ~= true or not Page["1e"]:FindFirstChild(InputToggleButton.Name)
+							if WaitingForEnd == true then return end -- make sure its not yielding for script to end already
+							WaitingForEnd = true
+							if ScriptDebounce == true then
+								repeat task.wait() until ScriptDebounce ~= true -- ensure that script has ended when calling the end script
 							end
-							WaitingForEnd = false
-						end)()
+							coroutine.wrap(function()
+								local succ, err = pcall(options["CallbackEnd"])
+								if not succ then
+									print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+								end
+								WaitingForEnd = false
+							end)()
 
-					end
-				end)()
-				InputTextBox.Text = inputVal
-				InputTextBox.Size = UDim2.new(0, InputTextBox.TextBounds.X + 24, 0, 30)
+						end
+					end)()
+					InputTextBox.Text = inputVal
+					InputTextBox.Size = UDim2.new(0, InputTextBox.TextBounds.X + 24, 0, 30)
+				end)
+				if not succ then
+					pcall(function()
+						print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						delfolder(SaveFolder) -- wipe save if data is corrupted
+					end)
+				end
 			end
 
 			return InputToggleParts
@@ -1735,7 +1795,7 @@ function Library:Create(options)
 			KeybindParts["44"]["TextScaled"] = true;
 			KeybindParts["44"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
 			KeybindParts["44"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-			KeybindParts["44"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+			KeybindParts["44"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 			KeybindParts["44"]["TextSize"] = 14;
 			KeybindParts["44"]["TextColor3"] = Color3.fromRGB(241, 241, 241);
 			KeybindParts["44"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
@@ -1769,7 +1829,7 @@ function Library:Create(options)
 			KeybindParts["47"]["BorderSizePixel"] = 0;
 			KeybindParts["47"]["BackgroundColor3"] = Color3.fromRGB(31, 31, 31);
 			KeybindParts["47"]["TextSize"] = 14;
-			KeybindParts["47"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+			KeybindParts["47"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 			KeybindParts["47"]["TextColor3"] = Color3.fromRGB(179, 179, 179);
 			KeybindParts["47"]["AnchorPoint"] = Vector2.new(1, 0.5);
 			KeybindParts["47"]["Size"] = UDim2.new(0, 79, 0, 30);
@@ -1807,7 +1867,7 @@ function Library:Create(options)
 			KeybindParts["4b"]["CornerRadius"] = UDim.new(0, 5);
 
 			--// functionality + variables
-			
+
 			local Flag
 			if options["Flag"] and tostring(options["Flag"]) ~= nil then
 				Flag = options["Flag"]
@@ -1824,6 +1884,7 @@ function Library:Create(options)
 			local Debounce = false
 
 			Title.Text = options["Name"]
+			KeybindButton.Name = options["Name"]..tostring(math.random(1,99999999))
 
 			KeybindButton.MouseEnter:Connect(function()
 				TweenService:Create(KeybindButton, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(40,40,40)}):Play()
@@ -1878,7 +1939,7 @@ function Library:Create(options)
 						AddRipple(KeybindButton,Color3.fromRGB(255,255,255),true)
 						coroutine.wrap(function()
 							local succ, err = pcall(options["Callback"])
-							if err then
+							if not succ then
 								print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
 							end
 						end)()
@@ -1889,13 +1950,21 @@ function Library:Create(options)
 					Keybind = input.KeyCode
 				end
 			end)
-			
+
 			if SaveFolder ~= nil then
-				local info = GetInfo(SaveFolder.."/"..Flag)
-				if info ~= nil and info ~= "" then
-					Keybind = Enum.KeyCode[info]
-					KeybindChangeButton.Text = info
-					KeybindChangeButton.Size = UDim2.new(0, KeybindChangeButton.TextBounds.X + 24, 0, 30)
+				local succ, err = pcall(function()
+					local info = GetInfo(SaveFolder.."/"..Flag)
+					if info ~= nil and info ~= "" then
+						Keybind = Enum.KeyCode[info]
+						KeybindChangeButton.Text = info
+						KeybindChangeButton.Size = UDim2.new(0, KeybindChangeButton.TextBounds.X + 24, 0, 30)
+					end
+				end)
+				if not succ then
+					pcall(function()
+						print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						delfolder(SaveFolder) -- wipe save if data is corrupted
+					end)
 				end
 			end
 		end
@@ -1943,7 +2012,7 @@ function Library:Create(options)
 			KeybindToggleParts["6e"]["TextScaled"] = true;
 			KeybindToggleParts["6e"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
 			KeybindToggleParts["6e"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-			KeybindToggleParts["6e"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+			KeybindToggleParts["6e"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 			KeybindToggleParts["6e"]["TextSize"] = 14;
 			KeybindToggleParts["6e"]["TextColor3"] = Color3.fromRGB(241, 241, 241);
 			KeybindToggleParts["6e"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
@@ -2030,7 +2099,7 @@ function Library:Create(options)
 			KeybindToggleParts["79"]["AutoButtonColor"] = false;
 			KeybindToggleParts["79"]["BackgroundColor3"] = Color3.fromRGB(31, 31, 31);
 			KeybindToggleParts["79"]["TextSize"] = 14;
-			KeybindToggleParts["79"]["FontFace"] = Font.new([[rbxasset://fonts/families/GothamSSm.json]], Enum.FontWeight.Medium, Enum.FontStyle.Normal);
+			KeybindToggleParts["79"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
 			KeybindToggleParts["79"]["TextColor3"] = Color3.fromRGB(179, 179, 179);
 			KeybindToggleParts["79"]["AnchorPoint"] = Vector2.new(1, 0.5);
 			KeybindToggleParts["79"]["Size"] = UDim2.new(0, 79, 0, 30);
@@ -2067,7 +2136,9 @@ function Library:Create(options)
 			KeybindToggleParts["7d"]["CornerRadius"] = UDim.new(0, 5);
 
 			--// functionality + variables
-			
+
+
+
 			local Flag
 			if options["Flag"] and tostring(options["Flag"]) ~= nil then
 				Flag = options["Flag"]
@@ -2077,12 +2148,33 @@ function Library:Create(options)
 
 			local isChangingKeybind = false
 			local Keybind
-			local Debounce = false
 
 			local Enabled = false
 			local ScriptDebounce = false
 			local WaitingForEnd = false
-			local b
+
+			local function GetKeybind()
+				if not Keybind or Keybind == nil then return "" end
+				local a = string.split(tostring(Keybind), ".")
+				local Format = a[3]
+				if not Format then return "" end
+				return Format
+			end
+
+			local function GetToggle()
+				if not Enabled or Enabled == nil then return "false" end
+				if Enabled == true then return "true" end
+				if Enabled == false then return "false" end
+			end
+
+			local function GetDataInfo()
+				local err
+				local ToggleVal = GetToggle()
+				local KeybindVal = GetKeybind()
+				local pack = ToggleVal.."⎧⎨"..KeybindVal
+				if not pack then return "⎧⎨" end
+				return pack
+			end
 
 			local KeybindToggleButton = KeybindToggleParts["6b"]
 			local Title = KeybindToggleParts["6e"]
@@ -2091,6 +2183,7 @@ function Library:Create(options)
 			local KeybindChangeButton = KeybindToggleParts["79"]
 
 			Title.Text = options["Name"]
+			KeybindToggleButton.Name = options["Name"]..tostring(math.random(1,99999999))
 
 			KeybindToggleButton.MouseEnter:Connect(function()
 				TweenService:Create(KeybindToggleButton, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(40,40,40)}):Play()
@@ -2112,8 +2205,6 @@ function Library:Create(options)
 			end)
 
 			KeybindChangeButton.MouseButton1Down:Connect(function()
-				if Debounce == true then return end
-				Debounce = true
 				KeybindChangeButton.Text = "..."
 				Keybind = nil
 				isChangingKeybind = true
@@ -2124,36 +2215,18 @@ function Library:Create(options)
 					KeybindChangeButton.Text = "Keybind"
 					Keybind = nil
 					isChangingKeybind = false
-					Debounce = false
-					b = ""
 					pcall(function()
-						local pack
-						local a
-						if Enabled == true then
-							a = "true"
-						else
-							a = ""
-						end
-						local pack = a.."⎧⎨"..b
+						local pack = GetDataInfo()
 						UpdateFile(SaveFolder.."/"..Flag, pack)
 					end)
 					return
 				end
 				KeybindChangeButton.Text = KeyCode
-				b = KeyCode
+				isChangingKeybind = false
 				pcall(function()
-					local pack
-					local a
-					if Enabled == true then
-						a = "true"
-					else
-						a = ""
-					end
-					local pack = a.."⎧⎨"..b
+					local pack = GetDataInfo()
 					UpdateFile(SaveFolder.."/"..Flag, pack)
 				end)
-				Debounce = false
-				isChangingKeybind = false
 			end)
 
 			UserInputService.InputBegan:Connect(function(input,gpe)
@@ -2163,42 +2236,36 @@ function Library:Create(options)
 						AddRipple(KeybindToggleButton,Color3.fromRGB(255,255,255),true)
 						if Enabled == false then
 							Enabled = true
-							pcall(function()
-								local pack
-								local a = "true"
-								local pack = a.."⎧⎨"..b
-								UpdateFile(SaveFolder.."/"..Flag, pack)
-							end)
 							TweenService:Create(ToggleCircleStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{Color = Color3.fromRGB(0, 170, 255)}):Play()
 							TweenService:Create(ToggleCircle, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(0, 146, 214)}):Play()
 							TweenService:Create(ToggleCircle, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, 12,0.5, 0)}):Play()
 						else
 							Enabled = false
-							pcall(function()
-								local pack
-								local a = ""
-								local pack = a.."⎧⎨"..b
-								UpdateFile(SaveFolder.."/"..Flag, pack)
-							end)
 							TweenService:Create(ToggleCircleStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{Color = Color3.fromRGB(125, 125, 125)}):Play()
 							TweenService:Create(ToggleCircle, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(100, 100, 100)}):Play()
 							TweenService:Create(ToggleCircle, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -11,0.5, 0)}):Play()
 						end
+						pcall(function()
+							local pack = GetDataInfo()
+							UpdateFile(SaveFolder.."/"..Flag, pack)
+						end)
 						coroutine.wrap(function()
 							local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
 							Tween:Play()
 							Tween.Completed:Wait()
 							local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)})
 							Tween:Play()
-							Tween.Completed:Wait()
-							Debounce = false
+							if Enabled == false then
+								return
+							end
 						end)()
+
 						repeat RunService.RenderStepped:Wait()
 							coroutine.wrap(function()
 								if ScriptDebounce == true then return end
 								ScriptDebounce = true
 								local succ, err = pcall(options["Callback"])
-								if err then
+								if not succ then
 									print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
 									Enabled = false
 									local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
@@ -2217,7 +2284,7 @@ function Library:Create(options)
 						end
 						coroutine.wrap(function()
 							local succ, err = pcall(options["CallbackEnd"])
-							if err then
+							if not succ then
 								print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
 							end
 							WaitingForEnd = false
@@ -2229,68 +2296,76 @@ function Library:Create(options)
 					Keybind = input.KeyCode
 				end
 			end)
-			
+
 			if SaveFolder ~= nil then
-				local info = GetInfo(SaveFolder.."/"..Flag)
-				if not info then return end
-				local spl = string.split(info, "⎧⎨")
-				local toggleVal = spl[1]
-				local inputVal = spl[2]
-				if not toggleVal and not inputVal then return end
-				coroutine.wrap(function()
-					if toggleVal == "true" or toggleVal == true then
-						Enabled = true
-						TweenService:Create(ToggleCircleStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{Color = Color3.fromRGB(0, 170, 255)}):Play()
-						TweenService:Create(ToggleCircle, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(0, 146, 214)}):Play()
-						TweenService:Create(ToggleCircle, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, 12,0.5, 0)}):Play()
+				local succ, err = pcall(function()
+					local info = GetInfo(SaveFolder.."/"..Flag)
+					if not info then return end
+					local spl = string.split(info, "⎧⎨")
+					local toggleVal = spl[1]
+					local inputVal = spl[2]
+					if not toggleVal and not inputVal then return end
+					coroutine.wrap(function()
+						if toggleVal == "true" or toggleVal == true then
+							Enabled = true
+							TweenService:Create(ToggleCircleStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{Color = Color3.fromRGB(0, 170, 255)}):Play()
+							TweenService:Create(ToggleCircle, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(0, 146, 214)}):Play()
+							TweenService:Create(ToggleCircle, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, 12,0.5, 0)}):Play()
 
-						coroutine.wrap(function()
-							local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
-							Tween:Play()
-							Tween.Completed:Wait()
-							local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)})
-							Tween:Play()
-							Tween.Completed:Wait()
-							if Enabled == false then
-								return
-							end
-						end)()
-						repeat RunService.RenderStepped:Wait()
 							coroutine.wrap(function()
-								if ScriptDebounce == true then return end
-								ScriptDebounce = true
-								local succ, err = pcall(options["Callback"])
-								if err then
-									print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
-									Enabled = false
-									local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
-									Tween:Play()
-									Tween.Completed:Wait()
-									local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)})
-									Tween:Play()
+								local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
+								Tween:Play()
+								Tween.Completed:Wait()
+								local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)})
+								Tween:Play()
+								Tween.Completed:Wait()
+								if Enabled == false then
+									return
 								end
-								ScriptDebounce = false
 							end)()
-						until Enabled ~= true or not Page["1e"]:FindFirstChild(KeybindToggleButton.Name)
-						if WaitingForEnd == true then return end -- make sure its not yielding for script to end already
-						WaitingForEnd = true
-						if ScriptDebounce == true then
-							repeat task.wait() until ScriptDebounce ~= true -- ensure that script has ended when calling the end script
-						end
-						coroutine.wrap(function()
-							local succ, err = pcall(options["CallbackEnd"])
-							if err then
-								print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+							repeat RunService.RenderStepped:Wait()
+								coroutine.wrap(function()
+									if ScriptDebounce == true then return end
+									ScriptDebounce = true
+									local succ, err = pcall(options["Callback"])
+									if not succ then
+										print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+										Enabled = false
+										local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
+										Tween:Play()
+										Tween.Completed:Wait()
+										local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)})
+										Tween:Play()
+									end
+									ScriptDebounce = false
+								end)()
+							until Enabled ~= true or not Page["1e"]:FindFirstChild(KeybindToggleButton.Name)
+							if WaitingForEnd == true then return end -- make sure its not yielding for script to end already
+							WaitingForEnd = true
+							if ScriptDebounce == true then
+								repeat task.wait() until ScriptDebounce ~= true -- ensure that script has ended when calling the end script
 							end
-							WaitingForEnd = false
-						end)()
+							coroutine.wrap(function()
+								local succ, err = pcall(options["CallbackEnd"])
+								if not succ then
+									print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+								end
+								WaitingForEnd = false
+							end)()
 
+						end
+					end)()
+					if inputVal ~= nil and inputVal ~= "" then
+						Keybind = Enum.KeyCode[inputVal]
+						KeybindChangeButton.Text = inputVal
+						KeybindChangeButton.Size = UDim2.new(0, KeybindChangeButton.TextBounds.X + 24, 0, 30)
 					end
-				end)()
-				if inputVal ~= nil and inputVal ~= "" then
-					Keybind = Enum.KeyCode[inputVal]
-					KeybindChangeButton.Text = inputVal
-					KeybindChangeButton.Size = UDim2.new(0, KeybindChangeButton.TextBounds.X + 24, 0, 30)
+				end)
+				if not succ then
+					pcall(function()
+						print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						delfolder(SaveFolder) -- wipe save if data is corrupted
+					end)
 				end
 			end
 		end
