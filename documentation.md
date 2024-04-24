@@ -17,7 +17,7 @@ local UI = SolarLib:Create {
 }
 ```
 
-## Updating the UI Toggle Keybind
+## Updating the UI Visibility Keybind
 ```lua
 SolarLib:UpdateKeybind {
   Keybind = Enum.KeyCode.RightControl -- Make sure its in keycode form, or else this wont work.
