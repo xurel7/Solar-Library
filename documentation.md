@@ -19,7 +19,7 @@ local UI = SolarLib:Create {
 
 ## Creating a Page
 ```lua
-local Page1 = UI:Create { -- Make sure to assign a new variable name for each page you create.
+local Page1 = UI:CreatePage { -- Make sure to assign a new variable name for each page you create.
   Name = "Page 1" -- The name of the page.
 }
 ```
