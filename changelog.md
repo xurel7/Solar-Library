@@ -12,3 +12,8 @@ Initial Release
 Fixed bugs with saving keybind toggles, added *1* new function, added documentation, added fixes for overlapping on toggles, corrupted save data no longer breaks UI.
 
 *Update pushed: April 23rd, 2024*
+
+## Update V1.0.2
+Updated default values, changed Gotham font to Montserrat font due to Roblox deprecating the Gotham font by the end of May.
+
+*Update pushed: April 24th, 2024*
