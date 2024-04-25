@@ -7,7 +7,7 @@
 ███████  ██████  ███████ ██   ██ ██   ██     ███████ ██ ██████
 
 Made by xurel, UI library for Solar Hub (discord.gg/solarhub)
-Version: v1.0.0
+Version: v1.0.2
 Contains Assets (Not Code) from Rayfields UI Library: https://github.com/shlexware/Rayfield
 Ignore shitty code, this was my first UI libary ive ever attempted, and I already know that there are some bad methods/pointless code in here.
 ]]
