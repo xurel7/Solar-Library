@@ -64,7 +64,8 @@ Page1:CreateToggle {
 
 ## Creating an Input Button
 ```lua
-local input1 = Page1:CreateInputButton {
+local input1 -- must define variable before creating input elements
+input1 = Page1:CreateInputButton { -- make sure to redefine your variable, dont define a new variable in the same name.
   Name = "An Input Button", -- The name of your input button.
   PlaceholderText = "Input Placeholder", -- What the placeholder for the inputbox says. You can delete if you dont want a custom placeholder.
   Flag = nil, -- You can leave nil or simply delete if you dont have multiple elements with the same name or your UI doesnt save. If you have multiple elements with the same name, make sure to give each one a different flag as it will cause save overlapping if you dont.
@@ -73,7 +74,7 @@ local input1 = Page1:CreateInputButton {
   MinNumber = nil, -- Delete or leave nil unless you are accepting only numbers for input, and want a min number.
   Callback = function ()
     -- You would put the code you want to be ran here. Below is an example of printing input.
-    local input = input1:GetInput() -- Make sure you make the input button a variable, so you can run the function. If your getting an error, just put "local input1" and then below paste this and remove the variable redefine.
+    local input = input1:GetInput() -- GetInput gets input (if no input, returns as nil), make sure you have correctly formatted everything or else this may error.
     print(input)
   end
 }
@@ -81,7 +82,8 @@ local input1 = Page1:CreateInputButton {
 
 ## Creating an Input Toggle
 ```lua
-local inputToggle1 = Page1:CreateInputToggle {
+local inputToggle1  -- must define variable before creating input elements
+inputToggle1 = Page1:CreateInputToggle {  -- make sure to redefine your variable, dont define a new variable in the same name.
   Name = "An Input Toggle", -- The name of your input toggle.
   PlaceholderText = "Input Placeholder", -- What the placeholder for the inputbox says. You can delete if you dont want a custom placeholder.
   Flag = nil, -- You can leave nil or simply delete if you dont have multiple elements with the same name or your UI doesnt save. If you have multiple elements with the same name, make sure to give each one a different flag as it will cause save overlapping if you dont.
@@ -90,7 +92,7 @@ local inputToggle1 = Page1:CreateInputToggle {
   MinNumber = nil, -- Delete or leave nil unless you are accepting only numbers for input, and want a min number.
   Callback = function ()
     -- You would put the code you want to be ran here. Below is an example of printing input.
-    local input = input1:GetInput() -- Make sure you make the input button a variable, so you can run the function. If your getting an error, just put "local input1" and then below paste this and remove the variable redefine.
+    local input = input1:GetInput() -- GetInput gets input (if no input, returns as nil), make sure you have correctly formatted everything or else this may error.
     print(input)
   end,
   CallbackEnd = function ()
@@ -134,4 +136,4 @@ Page1:CreateLabel{
 ## End of Documentation
 Thats it! All new features that are added will be added to the documentation.
 
-Last Updated: April 23rd, 2024
+Last Updated: April 27th, 2024
