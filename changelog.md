@@ -3,6 +3,12 @@ Below are all updates that have been pushed to Solar Library.
 
 For documentation, view [here](https://github.com/xurel7/Solar-Library/blob/main/documentation.md).
 
+## Update V1.0.4.5
+Fixed UI not functioning after recent bug patch. UI functions as intended now.
+
+*Update pushed: April 28th, 2024*
+
+
 ## Update V1.0.4
 Patched all *known* bugs.
 
