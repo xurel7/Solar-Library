@@ -1161,12 +1161,12 @@ function Library:Create(options)
 						end
 						local Num = tonumber(a)
 
-						if options["MaxNumber"] and options["MaxNumber"] ~= nil and tonumber(options["MaxNumber"]) ~= nil then
+						if options["MaxNumber"] and options["MaxNumber"] ~= nil and tonumber(options["MaxNumber"]) ~= nil and Num and Num ~= nil then
 							if Num >= options["MaxNumber"] then
 								Num = tonumber(options["MaxNumber"])
 							end
 						end
-						if options["MinNumber"] and options["MinNumber"] ~= nil and tonumber(options["MinNumber"]) ~= nil then
+						if options["MinNumber"] and options["MinNumber"] ~= nil and tonumber(options["MinNumber"]) ~= nil and Num and Num ~= nil then
 							if Num <= options["MinNumber"] then
 								Num = tonumber(options["MinNumber"])
 							end
@@ -1657,12 +1657,12 @@ function Library:Create(options)
 						end
 						local Num = tonumber(a)
 
-						if options["MaxNumber"] and options["MaxNumber"] ~= nil and tonumber(options["MaxNumber"]) ~= nil then
+						if options["MaxNumber"] and options["MaxNumber"] ~= nil and tonumber(options["MaxNumber"]) ~= nil and Num and Num ~= nil then
 							if Num >= options["MaxNumber"] then
 								Num = tonumber(options["MaxNumber"])
 							end
 						end
-						if options["MinNumber"] and options["MinNumber"] ~= nil and tonumber(options["MinNumber"]) ~= nil then
+						if options["MinNumber"] and options["MinNumber"] ~= nil and tonumber(options["MinNumber"]) ~= nil and Num and Num ~= nil then
 							if Num <= options["MinNumber"] then
 								Num = tonumber(options["MinNumber"])
 							end
