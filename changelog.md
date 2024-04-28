@@ -3,6 +3,11 @@ Below are all updates that have been pushed to Solar Library.
 
 For documentation, view [here](https://github.com/xurel7/Solar-Library/blob/main/documentation.md).
 
+## Update V1.0.4
+Patched all *known* bugs.
+
+Bugs included: Keybind Buttons would still run code when keybind pressed after GUI deletion. This should be fixed now.
+
 ## Update V1.0.3
 Patched all *known* bugs.
 
