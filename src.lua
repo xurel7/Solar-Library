@@ -1933,7 +1933,7 @@ function Library:Create(options)
 			end)
 
 			UserInputService.InputBegan:Connect(function(input,gpe)
-				if gpe then return end
+				if gpe  not Page["1e"]:FindFirstChild(KeybindToggleButton.Name) then Keybind = nil return end
 				if Keybind and Keybind ~= nil then
 					if input.KeyCode == Keybind then
 						AddRipple(KeybindButton,Color3.fromRGB(255,255,255),true)
@@ -2230,7 +2230,7 @@ function Library:Create(options)
 			end)
 
 			UserInputService.InputBegan:Connect(function(input,gpe)
-				if gpe or not Page["1e"]:FindFirstChild(KeybindToggleButton.Name) then return end
+				if gpe or not Page["1e"]:FindFirstChild(KeybindToggleButton.Name) then Keybind = nil return end
 				if Keybind and Keybind ~= nil then
 					if input.KeyCode == Keybind then
 						AddRipple(KeybindToggleButton,Color3.fromRGB(255,255,255),true)
