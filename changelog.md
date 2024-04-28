@@ -8,6 +8,8 @@ Patched all *known* bugs.
 
 Bugs included: Keybind Buttons would still run code when keybind pressed after GUI deletion. This should be fixed now.
 
+*Update pushed: April 28th, 2024*
+
 ## Update V1.0.3
 Patched all *known* bugs.
 
