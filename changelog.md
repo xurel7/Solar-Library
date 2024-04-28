@@ -21,6 +21,6 @@ Updated default values, changed Gotham font to Montserrat font due to Roblox dep
 ## Update V1.0.3
 Patched all *known* bugs.
 
-Bugs included: Input Toggle & Input Button (Error: Code would error if InputType was "number" and no numbers were in input. Error should be fixed now.)
+Bugs included: GetInput func (if InputType was number, there would be a error if no number was provided. This should be fixed now.)
 
 *Update pushed: April 28th, 2024*
