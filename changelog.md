@@ -17,3 +17,8 @@ Fixed bugs with saving keybind toggles, added *1* new function, added documentat
 Updated default values, changed Gotham font to Montserrat font due to Roblox deprecating the Gotham font by the end of May.
 
 *Update pushed: April 24th, 2024*
+
+## Update V1.0.3
+Patched all *known* bugs.
+
+*Update pushed: April 28th, 2024*
