@@ -7,7 +7,7 @@
 ███████  ██████  ███████ ██   ██ ██   ██     ███████ ██ ██████
 
 Made by xurel, UI library for Solar Hub (discord.gg/solarhub)
-Version: v1.0.4
+Version: v1.0.4.5
 Contains Assets (Not Code) from Rayfields UI Library: https://github.com/shlexware/Rayfield
 Ignore shitty code, this was my first UI libary ive ever attempted, and I already know that there are some bad methods/pointless code in here.
 ]]
@@ -1933,7 +1933,7 @@ function Library:Create(options)
 			end)
 
 			UserInputService.InputBegan:Connect(function(input,gpe)
-				if gpe  not Page["1e"]:FindFirstChild(KeybindToggleButton.Name) then Keybind = nil return end
+				if gpe or not Page["1e"]:FindFirstChild(KeybindToggleButton.Name) then Keybind = nil return end
 				if Keybind and Keybind ~= nil then
 					if input.KeyCode == Keybind then
 						AddRipple(KeybindButton,Color3.fromRGB(255,255,255),true)
