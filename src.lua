@@ -14,11 +14,20 @@ Ignore shitty code, this was my first UI libary ive ever attempted, and I alread
 
 repeat task.wait() until game:IsLoaded() -- autoexec
 
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
-local Par = game:GetService("CoreGui")
+local function Service(string)
+	pcall(function()
+		if cloneref then
+			return cloneref(game:GetService(string))
+		end
+		return game:GetService(string)
+	end)
+end
+
+local UserInputService = Service("UserInputService")
+local RunService = Service("RunService")
+local Players = Service("Players")
+local TweenService = Service("TweenService")
+local Par = Service("CoreGui")
 
 local Library = {}
 local SelectedPage = nil
@@ -67,7 +76,7 @@ end
 
 local function AddRipple(parent, color, pos)
 	parent.ClipsDescendants = true
-	local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
+	local Mouse = LocalPlayer:GetMouse()
 	local G = Instance.new("Frame")
 	G.BackgroundColor3 = color
 	local B = Instance.new("UICorner")
@@ -389,7 +398,7 @@ function Library:Create(options)
 		local delta = input.Position - dragStart
 		local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
 			startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-		game:GetService('TweenService'):Create(frame, TweenInfo.new(dragSpeed), {Position = position}):Play()
+		TweenService:Create(frame, TweenInfo.new(dragSpeed), {Position = position}):Play()
 	end
 
 	frame.InputBegan:Connect(function(input)
