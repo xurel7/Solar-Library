@@ -15,12 +15,10 @@ Ignore shitty code, this was my first UI libary ive ever attempted, and I alread
 repeat task.wait() until game:IsLoaded() -- autoexec
 
 local function Service(string)
-	pcall(function()
-		if cloneref then
-			return cloneref(game:GetService(string))
-		end
-		return game:GetService(string)
-	end)
+	if cloneref then
+		return cloneref(game:GetService(string))
+	end
+	return game:GetService(string)
 end
 
 local UserInputService = Service("UserInputService")
