@@ -3,6 +3,11 @@ Below are all updates that have been pushed to Solar Library.
 
 For documentation, view [here](https://github.com/xurel7/Solar-Library/blob/main/documentation.md).
 
+## Update V1.0.6
+Fixed a bug related to negative numbers on Input elements.
+
+*Update pushed: May 11th, 2024*
+
 ## Update V1.0.5
 Patched CoreGui Detection on certain games.
 
