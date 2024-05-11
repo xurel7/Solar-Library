@@ -7,7 +7,7 @@
 ███████  ██████  ███████ ██   ██ ██   ██     ███████ ██ ██████
 
 Made by xurel, UI library for Solar Hub (discord.gg/solarhub)
-Version: v1.0.5
+Version: v1.0.6
 Contains Assets (Not Code) from Rayfields UI Library: https://github.com/shlexware/Rayfield
 Ignore shitty code, this was my first UI libary ive ever attempted, and I already know that there are some bad methods/pointless code in here.
 ]]
@@ -1164,7 +1164,9 @@ function Library:Create(options)
 
 						local a = InputBox.Text:gsub("%D","")
 						if string.find(InputBox.Text:sub(1,1),"-") then
-							a = -a
+							if a then
+								a = -a
+							end
 						end
 						local Num = tonumber(a)
 
@@ -1660,7 +1662,9 @@ function Library:Create(options)
 
 						local a = InputTextBox.Text:gsub("%D","")
 						if string.find(InputTextBox.Text:sub(1,1),"-") then
-							a = -a
+							if a then
+								a = -a
+							end
 						end
 						local Num = tonumber(a)
 
