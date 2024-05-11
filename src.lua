@@ -1163,10 +1163,9 @@ function Library:Create(options)
 						local NumberToReturn
 
 						local a = InputBox.Text:gsub("%D","")
+						if not tonumber(a) then return end
 						if string.find(InputBox.Text:sub(1,1),"-") then
-							if a then
-								a = -a
-							end
+							a = -a
 						end
 						local Num = tonumber(a)
 
@@ -1661,10 +1660,9 @@ function Library:Create(options)
 						local NumberToReturn
 
 						local a = InputTextBox.Text:gsub("%D","")
+						if not tonumber(a) then return end
 						if string.find(InputTextBox.Text:sub(1,1),"-") then
-							if a then
-								a = -a
-							end
+							a = -a
 						end
 						local Num = tonumber(a)
 
