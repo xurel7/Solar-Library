@@ -4,6 +4,11 @@ Below are all updates that have been pushed to Solar Library.
 For documentation, view [here](https://github.com/xurel7/Solar-Library/blob/main/documentation.md).
 
 ## Update V1.0.6
+Added a new function: LabelName:UpdateText{Text = "New Text"}, can be used to update a TextLabel. A case where this could be used is for a target specific player section.
+
+*Update pushed: May 12th, 2024*
+
+## Update V1.0.6
 Fixed a bug related to negative numbers on input elements.
 
 *Update pushed: May 11th, 2024*
