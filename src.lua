@@ -7,7 +7,7 @@
 ███████  ██████  ███████ ██   ██ ██   ██     ███████ ██ ██████
 
 Made by xurel, UI library for Solar Hub (discord.gg/solarhub)
-Version: v1.0.6
+Version: v1.0.7
 Contains Assets (Not Code) from Rayfields UI Library: https://github.com/shlexware/Rayfield
 Ignore shitty code, this was my first UI libary ive ever attempted, and I already know that there are some bad methods/pointless code in here.
 ]]
@@ -1272,6 +1272,17 @@ function Library:Create(options)
 			Label.MouseLeave:Connect(function()
 				TweenService:Create(Label, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(43,105,159)}):Play()
 			end)
+			
+			function LabelParts:UpdateText(options)
+				if not options then options = {} end
+				Library:Validate({
+					Text = "Updated Label"
+				}, options or {})
+				
+				Title.Text = options["Text"]
+			end
+			
+			return LabelParts
 		end
 
 		function Page:CreateHeader(options)
