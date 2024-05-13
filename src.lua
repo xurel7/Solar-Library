@@ -7,7 +7,7 @@
 ███████  ██████  ███████ ██   ██ ██   ██     ███████ ██ ██████
 
 Made by xurel, UI library for Solar Hub (discord.gg/solarhub)
-Version: v1.0.7
+Version: v1.0.8
 Contains Assets (Not Code) from Rayfields UI Library: https://github.com/shlexware/Rayfield
 Ignore shitty code, this was my first UI libary ive ever attempted, and I already know that there are some bad methods/pointless code in here.
 ]]
@@ -100,7 +100,7 @@ function Library:Validate(defaults, options)
 	return options
 end
 
-function Library:UpdateKeybing(options)
+function Library:UpdateKeybind(options)
 	if not options then options = {} end
 	Library:Validate({
 		Keybind = Enum.KeyCode.RightControl
@@ -114,8 +114,11 @@ function Library:Create(options)
 	Library:Validate({
 		Name = "Solar Library",
 		GameName = game.PlaceId,
-		SaveData = true
+		SaveData = true,
+		DeveloperMode = true
 	}, options or {})
+	
+	local devMode = options["DeveloperMode"]
 
 	local SaveFolder
 	local UIName
@@ -578,6 +581,8 @@ function Library:Create(options)
 				Callback = function()
 
 				end,
+				Locked = nil,
+				LockedText = "Premium Only"
 			},options or {})
 
 			local Button = {}
@@ -661,6 +666,8 @@ function Library:Create(options)
 			Button["27"]["CornerRadius"] = UDim.new(0, 4);
 
 			--// functionality + variables
+			
+			
 
 			local RealButton = Button["21"]
 			local ElementIndicator = Button["25"]
@@ -668,6 +675,73 @@ function Library:Create(options)
 
 			Title.Text = options["Name"]
 			RealButton.Name = options["Name"]..tostring(math.random(1,99999999))
+			if options["Locked"] == true then
+				local LockedParts = {}
+				LockedParts["28"] = Instance.new("Frame", RealButton);
+				LockedParts["28"]["BorderSizePixel"] = 0;
+				LockedParts["28"]["BackgroundColor3"] = Color3.fromRGB(48, 0, 0);
+				LockedParts["28"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["28"]["BackgroundTransparency"] = 0.25;
+				LockedParts["28"]["Size"] = UDim2.new(1, 0, 1, 0);
+				LockedParts["28"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				LockedParts["28"]["Position"] = UDim2.new(0.5, 0, 0.5, 0);
+				LockedParts["28"]["Name"] = [[LockedFrame]];
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.UICorner
+				LockedParts["29"] = Instance.new("UICorner", LockedParts["28"]);
+				LockedParts["29"]["CornerRadius"] = UDim.new(0, 4);
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.UIStroke
+				LockedParts["2a"] = Instance.new("UIStroke", LockedParts["28"]);
+				LockedParts["2a"]["Color"] = Color3.fromRGB(95, 0, 0);
+				LockedParts["2a"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.TextLabel
+				LockedParts["2b"] = Instance.new("TextLabel", LockedParts["28"]);
+				LockedParts["2b"]["TextWrapped"] = true;
+				LockedParts["2b"]["BorderSizePixel"] = 0;
+				LockedParts["2b"]["TextScaled"] = true;
+				LockedParts["2b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+				LockedParts["2b"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
+				LockedParts["2b"]["TextSize"] = 14;
+				LockedParts["2b"]["TextColor3"] = Color3.fromRGB(201, 201, 201);
+				LockedParts["2b"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["2b"]["Size"] = UDim2.new(1, 0, 0, 15);
+				LockedParts["2b"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				LockedParts["2b"]["Text"] = [[xurel]];
+				LockedParts["2b"]["BackgroundTransparency"] = 1;
+				LockedParts["2b"]["Position"] = UDim2.new(0.5, 0, 0.5, 9);
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.lock
+				LockedParts["2c"] = Instance.new("ImageButton", LockedParts["28"]);
+				LockedParts["2c"]["ZIndex"] = 1;
+				LockedParts["2c"]["BorderSizePixel"] = 0;
+				LockedParts["2c"]["ImageColor3"] = Color3.fromRGB(201, 201, 201);
+				LockedParts["2c"]["LayoutOrder"] = 1;
+				LockedParts["2c"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["2c"]["Image"] = [[rbxassetid://3926305904]];
+				LockedParts["2c"]["ImageRectSize"] = Vector2.new(36, 36);
+				LockedParts["2c"]["Size"] = UDim2.new(0, 18, 0, 18);
+				LockedParts["2c"]["Name"] = [[lock]];
+				LockedParts["2c"]["ImageRectOffset"] = Vector2.new(4, 684);
+				LockedParts["2c"]["Position"] = UDim2.new(0.5, 0, 0.5, -6);
+				LockedParts["2c"]["BackgroundTransparency"] = 1;
+
+				local LockedFrame = LockedParts["28"]
+				local LockedText = LockedParts["2b"]
+				
+				LockedText.Text = options["LockedText"]
+				
+				LockedFrame.MouseEnter:Connect(function()
+					TweenService:Create(LockedFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(55, 0, 0)}):Play()
+				end)
+				LockedFrame.MouseLeave:Connect(function()
+					TweenService:Create(LockedFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(47, 0, 0)}):Play()
+				end)
+				
+				return
+			end
+			
 
 			RealButton.MouseEnter:Connect(function()
 				TweenService:Create(RealButton, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(40,40,40)}):Play()
@@ -684,7 +758,9 @@ function Library:Create(options)
 				coroutine.wrap(function()
 					local succ, err = pcall(options["Callback"])
 					if not succ then
-						print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+						if devMode == true then
+							print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+						end
 					end
 				end)()
 
@@ -701,7 +777,9 @@ function Library:Create(options)
 				CallbackEnd = function()
 
 				end,
-				Flag = nil
+				Flag = nil,
+				Locked = nil,
+				LockedText = "Premium Only"
 			},options or {})
 
 			local ToggleParts = {}
@@ -824,6 +902,73 @@ function Library:Create(options)
 
 			Title.Text = options["Name"]
 			ToggleButton.Name = options["Name"]..tostring(math.random(1,99999999))
+			
+			if options["Locked"] == true then
+				local LockedParts = {}
+				LockedParts["28"] = Instance.new("Frame", ToggleButton);
+				LockedParts["28"]["BorderSizePixel"] = 0;
+				LockedParts["28"]["BackgroundColor3"] = Color3.fromRGB(48, 0, 0);
+				LockedParts["28"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["28"]["BackgroundTransparency"] = 0.25;
+				LockedParts["28"]["Size"] = UDim2.new(1, 0, 1, 0);
+				LockedParts["28"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				LockedParts["28"]["Position"] = UDim2.new(0.5, 0, 0.5, 0);
+				LockedParts["28"]["Name"] = [[LockedFrame]];
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.UICorner
+				LockedParts["29"] = Instance.new("UICorner", LockedParts["28"]);
+				LockedParts["29"]["CornerRadius"] = UDim.new(0, 4);
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.UIStroke
+				LockedParts["2a"] = Instance.new("UIStroke", LockedParts["28"]);
+				LockedParts["2a"]["Color"] = Color3.fromRGB(95, 0, 0);
+				LockedParts["2a"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.TextLabel
+				LockedParts["2b"] = Instance.new("TextLabel", LockedParts["28"]);
+				LockedParts["2b"]["TextWrapped"] = true;
+				LockedParts["2b"]["BorderSizePixel"] = 0;
+				LockedParts["2b"]["TextScaled"] = true;
+				LockedParts["2b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+				LockedParts["2b"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
+				LockedParts["2b"]["TextSize"] = 14;
+				LockedParts["2b"]["TextColor3"] = Color3.fromRGB(201, 201, 201);
+				LockedParts["2b"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["2b"]["Size"] = UDim2.new(1, 0, 0, 15);
+				LockedParts["2b"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				LockedParts["2b"]["Text"] = [[xurel]];
+				LockedParts["2b"]["BackgroundTransparency"] = 1;
+				LockedParts["2b"]["Position"] = UDim2.new(0.5, 0, 0.5, 9);
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.lock
+				LockedParts["2c"] = Instance.new("ImageButton", LockedParts["28"]);
+				LockedParts["2c"]["ZIndex"] = 1;
+				LockedParts["2c"]["BorderSizePixel"] = 0;
+				LockedParts["2c"]["ImageColor3"] = Color3.fromRGB(201, 201, 201);
+				LockedParts["2c"]["LayoutOrder"] = 1;
+				LockedParts["2c"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["2c"]["Image"] = [[rbxassetid://3926305904]];
+				LockedParts["2c"]["ImageRectSize"] = Vector2.new(36, 36);
+				LockedParts["2c"]["Size"] = UDim2.new(0, 18, 0, 18);
+				LockedParts["2c"]["Name"] = [[lock]];
+				LockedParts["2c"]["ImageRectOffset"] = Vector2.new(4, 684);
+				LockedParts["2c"]["Position"] = UDim2.new(0.5, 0, 0.5, -6);
+				LockedParts["2c"]["BackgroundTransparency"] = 1;
+
+				local LockedFrame = LockedParts["28"]
+				local LockedText = LockedParts["2b"]
+
+				LockedText.Text = options["LockedText"]
+
+				LockedFrame.MouseEnter:Connect(function()
+					TweenService:Create(LockedFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(55, 0, 0)}):Play()
+				end)
+				LockedFrame.MouseLeave:Connect(function()
+					TweenService:Create(LockedFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(47, 0, 0)}):Play()
+				end)
+
+				return
+			end
 
 			local Enabled = false
 			local Debounce = false
@@ -884,7 +1029,9 @@ function Library:Create(options)
 						ScriptDebounce = true
 						local succ, err = pcall(options["Callback"])
 						if not succ then
-							print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+							if devMode == true then
+								print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+							end
 							Enabled = false
 							local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
 							Tween:Play()
@@ -903,7 +1050,9 @@ function Library:Create(options)
 				coroutine.wrap(function()
 					local succ, err = pcall(options["CallbackEnd"])
 					if not succ then
-						print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+						if devMode == true then
+							print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+						end
 					end
 					WaitingForEnd = false
 				end)()
@@ -939,7 +1088,9 @@ function Library:Create(options)
 									ScriptDebounce = true
 									local succ, err = pcall(options["Callback"])
 									if not succ then
-										print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+										if devMode == true then
+											print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+										end
 										Enabled = false
 										local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
 										Tween:Play()
@@ -958,7 +1109,9 @@ function Library:Create(options)
 							coroutine.wrap(function()
 								local succ, err = pcall(options["CallbackEnd"])
 								if not succ then
-									print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+									if devMode == true then
+										print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+									end
 								end
 								WaitingForEnd = false
 							end)()
@@ -967,7 +1120,9 @@ function Library:Create(options)
 				end)
 				if not succ then
 					pcall(function()
-						print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						if devMode == true then
+							print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						end
 						delfolder(SaveFolder) -- wipe save if data is corrupted
 					end)
 				end
@@ -985,7 +1140,9 @@ function Library:Create(options)
 				MaxNumber = nil,
 				MinNumber = nil,
 				PlaceholderText = "Input Placeholder",
-				Flag = nil
+				Flag = nil,
+				Locked = nil,
+				LockedText = "Premium Only"
 			},options or {})
 
 			local PageParts = {}
@@ -1107,6 +1264,80 @@ function Library:Create(options)
 			InputButton.Name = options["Name"]..tostring(math.random(1,99999999))
 			InputBox.PlaceholderText = options["PlaceholderText"]
 			InputBox.Size = UDim2.new(0, InputBox.TextBounds.X + 24, 0, 30)
+			
+			InputBox:GetPropertyChangedSignal("Text"):Connect(function()
+				TweenService:Create(InputBox, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, InputBox.TextBounds.X + 24, 0, 30)}):Play()
+				pcall(function()
+					UpdateFile(SaveFolder.."/"..Flag,InputBox.Text)
+				end)
+			end)
+			
+			if options["Locked"] == true then
+				local LockedParts = {}
+				LockedParts["28"] = Instance.new("Frame", InputButton);
+				LockedParts["28"]["BorderSizePixel"] = 0;
+				LockedParts["28"]["BackgroundColor3"] = Color3.fromRGB(48, 0, 0);
+				LockedParts["28"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["28"]["BackgroundTransparency"] = 0.25;
+				LockedParts["28"]["Size"] = UDim2.new(1, 0, 1, 0);
+				LockedParts["28"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				LockedParts["28"]["Position"] = UDim2.new(0.5, 0, 0.5, 0);
+				LockedParts["28"]["Name"] = [[LockedFrame]];
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.UICorner
+				LockedParts["29"] = Instance.new("UICorner", LockedParts["28"]);
+				LockedParts["29"]["CornerRadius"] = UDim.new(0, 4);
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.UIStroke
+				LockedParts["2a"] = Instance.new("UIStroke", LockedParts["28"]);
+				LockedParts["2a"]["Color"] = Color3.fromRGB(95, 0, 0);
+				LockedParts["2a"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.TextLabel
+				LockedParts["2b"] = Instance.new("TextLabel", LockedParts["28"]);
+				LockedParts["2b"]["TextWrapped"] = true;
+				LockedParts["2b"]["BorderSizePixel"] = 0;
+				LockedParts["2b"]["TextScaled"] = true;
+				LockedParts["2b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+				LockedParts["2b"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
+				LockedParts["2b"]["TextSize"] = 14;
+				LockedParts["2b"]["TextColor3"] = Color3.fromRGB(201, 201, 201);
+				LockedParts["2b"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["2b"]["Size"] = UDim2.new(1, 0, 0, 15);
+				LockedParts["2b"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				LockedParts["2b"]["Text"] = [[xurel]];
+				LockedParts["2b"]["BackgroundTransparency"] = 1;
+				LockedParts["2b"]["Position"] = UDim2.new(0.5, 0, 0.5, 9);
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.lock
+				LockedParts["2c"] = Instance.new("ImageButton", LockedParts["28"]);
+				LockedParts["2c"]["ZIndex"] = 1;
+				LockedParts["2c"]["BorderSizePixel"] = 0;
+				LockedParts["2c"]["ImageColor3"] = Color3.fromRGB(201, 201, 201);
+				LockedParts["2c"]["LayoutOrder"] = 1;
+				LockedParts["2c"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["2c"]["Image"] = [[rbxassetid://3926305904]];
+				LockedParts["2c"]["ImageRectSize"] = Vector2.new(36, 36);
+				LockedParts["2c"]["Size"] = UDim2.new(0, 18, 0, 18);
+				LockedParts["2c"]["Name"] = [[lock]];
+				LockedParts["2c"]["ImageRectOffset"] = Vector2.new(4, 684);
+				LockedParts["2c"]["Position"] = UDim2.new(0.5, 0, 0.5, -6);
+				LockedParts["2c"]["BackgroundTransparency"] = 1;
+
+				local LockedFrame = LockedParts["28"]
+				local LockedText = LockedParts["2b"]
+
+				LockedText.Text = options["LockedText"]
+
+				LockedFrame.MouseEnter:Connect(function()
+					TweenService:Create(LockedFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(55, 0, 0)}):Play()
+				end)
+				LockedFrame.MouseLeave:Connect(function()
+					TweenService:Create(LockedFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(47, 0, 0)}):Play()
+				end)
+
+				return
+			end
 
 			if SaveFolder ~= nil then
 				local succ, err = pcall(function()
@@ -1118,7 +1349,9 @@ function Library:Create(options)
 				end)
 				if not succ then
 					pcall(function()
-						print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						if devMode == true then
+							print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						end
 						delfolder(SaveFolder) -- wipe save if data is corrupted
 					end)
 				end
@@ -1132,21 +1365,14 @@ function Library:Create(options)
 				TweenService:Create(InputButton, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(35,35,35)}):Play()
 			end)
 
-			InputBox:GetPropertyChangedSignal("Text"):Connect(function()
-				TweenService:Create(InputBox, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, InputBox.TextBounds.X + 24, 0, 30)}):Play()
-				pcall(function()
-					UpdateFile(SaveFolder.."/"..Flag,InputBox.Text)
-				end)
-			end)
-
-
-
 			InputButton.MouseButton1Down:Connect(function()
 				AddRipple(InputButton,Color3.fromRGB(255,255,255))
 				coroutine.wrap(function()
 					local succ, err = pcall(options["Callback"])
 					if not succ then
-						print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+						if devMode == true then
+							print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+						end
 					end
 				end)()
 
@@ -1377,7 +1603,9 @@ function Library:Create(options)
 				MaxNumber = nil,
 				MinNumber = nil,
 				PlaceholderText = "Input Placeholder",
-				Flag = nil
+				Flag = nil,
+				Locked = nil,
+				LockedText = "Premium Only"
 			}, options or {})
 
 			local InputToggleParts = {}
@@ -1557,6 +1785,88 @@ function Library:Create(options)
 
 			InputTextBox.PlaceholderText = options["PlaceholderText"]
 			InputTextBox.Size = UDim2.new(0, InputTextBox.TextBounds.X + 24, 0, 30)
+			
+			InputTextBox:GetPropertyChangedSignal("Text"):Connect(function()
+				TweenService:Create(InputTextBox, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, InputTextBox.TextBounds.X + 24, 0, 30)}):Play()
+				pcall(function()
+					local pack
+					local a
+					if Enabled == true then
+						a = "true"
+					else
+						a = ""
+					end
+					local pack = a.."⎧⎨"..InputTextBox.Text
+					UpdateFile(SaveFolder.."/"..Flag, pack)
+				end)
+			end)
+			
+			if options["Locked"] == true then
+				local LockedParts = {}
+				LockedParts["28"] = Instance.new("Frame", InputToggleButton);
+				LockedParts["28"]["BorderSizePixel"] = 0;
+				LockedParts["28"]["BackgroundColor3"] = Color3.fromRGB(48, 0, 0);
+				LockedParts["28"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["28"]["BackgroundTransparency"] = 0.25;
+				LockedParts["28"]["Size"] = UDim2.new(1, 0, 1, 0);
+				LockedParts["28"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				LockedParts["28"]["Position"] = UDim2.new(0.5, 0, 0.5, 0);
+				LockedParts["28"]["Name"] = [[LockedFrame]];
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.UICorner
+				LockedParts["29"] = Instance.new("UICorner", LockedParts["28"]);
+				LockedParts["29"]["CornerRadius"] = UDim.new(0, 4);
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.UIStroke
+				LockedParts["2a"] = Instance.new("UIStroke", LockedParts["28"]);
+				LockedParts["2a"]["Color"] = Color3.fromRGB(95, 0, 0);
+				LockedParts["2a"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.TextLabel
+				LockedParts["2b"] = Instance.new("TextLabel", LockedParts["28"]);
+				LockedParts["2b"]["TextWrapped"] = true;
+				LockedParts["2b"]["BorderSizePixel"] = 0;
+				LockedParts["2b"]["TextScaled"] = true;
+				LockedParts["2b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+				LockedParts["2b"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
+				LockedParts["2b"]["TextSize"] = 14;
+				LockedParts["2b"]["TextColor3"] = Color3.fromRGB(201, 201, 201);
+				LockedParts["2b"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["2b"]["Size"] = UDim2.new(1, 0, 0, 15);
+				LockedParts["2b"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				LockedParts["2b"]["Text"] = [[xurel]];
+				LockedParts["2b"]["BackgroundTransparency"] = 1;
+				LockedParts["2b"]["Position"] = UDim2.new(0.5, 0, 0.5, 9);
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.lock
+				LockedParts["2c"] = Instance.new("ImageButton", LockedParts["28"]);
+				LockedParts["2c"]["ZIndex"] = 1;
+				LockedParts["2c"]["BorderSizePixel"] = 0;
+				LockedParts["2c"]["ImageColor3"] = Color3.fromRGB(201, 201, 201);
+				LockedParts["2c"]["LayoutOrder"] = 1;
+				LockedParts["2c"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["2c"]["Image"] = [[rbxassetid://3926305904]];
+				LockedParts["2c"]["ImageRectSize"] = Vector2.new(36, 36);
+				LockedParts["2c"]["Size"] = UDim2.new(0, 18, 0, 18);
+				LockedParts["2c"]["Name"] = [[lock]];
+				LockedParts["2c"]["ImageRectOffset"] = Vector2.new(4, 684);
+				LockedParts["2c"]["Position"] = UDim2.new(0.5, 0, 0.5, -6);
+				LockedParts["2c"]["BackgroundTransparency"] = 1;
+
+				local LockedFrame = LockedParts["28"]
+				local LockedText = LockedParts["2b"]
+
+				LockedText.Text = options["LockedText"]
+
+				LockedFrame.MouseEnter:Connect(function()
+					TweenService:Create(LockedFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(55, 0, 0)}):Play()
+				end)
+				LockedFrame.MouseLeave:Connect(function()
+					TweenService:Create(LockedFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(47, 0, 0)}):Play()
+				end)
+
+				return
+			end
 
 			InputToggleButton.MouseEnter:Connect(function()
 				TweenService:Create(InputToggleButton, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(40,40,40)}):Play()
@@ -1619,7 +1929,9 @@ function Library:Create(options)
 						ScriptDebounce = true
 						local succ, err = pcall(options["Callback"])
 						if not succ then
-							print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+							if devMode == true then
+								print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+							end
 							Enabled = false
 							local Tween = TweenService:Create(TogglePart, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
 							Tween:Play()
@@ -1638,27 +1950,13 @@ function Library:Create(options)
 				coroutine.wrap(function()
 					local succ, err = pcall(options["CallbackEnd"])
 					if not succ then
-						print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+						if devMode == true then
+							print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+						end
 					end
 					WaitingForEnd = false
 				end)()
 
-			end)
-
-
-			InputTextBox:GetPropertyChangedSignal("Text"):Connect(function()
-				TweenService:Create(InputTextBox, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, InputTextBox.TextBounds.X + 24, 0, 30)}):Play()
-				pcall(function()
-					local pack
-					local a
-					if Enabled == true then
-						a = "true"
-					else
-						a = ""
-					end
-					local pack = a.."⎧⎨"..InputTextBox.Text
-					UpdateFile(SaveFolder.."/"..Flag, pack)
-				end)
 			end)
 
 			function InputToggleParts:GetInput()
@@ -1733,7 +2031,9 @@ function Library:Create(options)
 									ScriptDebounce = true
 									local succ, err = pcall(options["Callback"])
 									if not succ then
-										print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+										if devMode == true then
+											print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+										end
 										Enabled = false
 										local Tween = TweenService:Create(TogglePart, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
 										Tween:Play()
@@ -1752,7 +2052,9 @@ function Library:Create(options)
 							coroutine.wrap(function()
 								local succ, err = pcall(options["CallbackEnd"])
 								if not succ then
-									print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+									if devMode == true then
+										print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+									end
 								end
 								WaitingForEnd = false
 							end)()
@@ -1764,7 +2066,9 @@ function Library:Create(options)
 				end)
 				if not succ then
 					pcall(function()
-						print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						if devMode == true then
+							print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						end
 						delfolder(SaveFolder) -- wipe save if data is corrupted
 					end)
 				end
@@ -1781,7 +2085,9 @@ function Library:Create(options)
 				Callback = function()
 
 				end,
-				Flag = nil
+				Flag = nil,
+				Locked = nil,
+				LockedText = "Premium Only"
 			}, options or {})
 
 			local KeybindParts = {}
@@ -1906,14 +2212,74 @@ function Library:Create(options)
 			Title.Text = options["Name"]
 			KeybindButton.Name = options["Name"]..tostring(math.random(1,99999999))
 
-			KeybindButton.MouseEnter:Connect(function()
-				TweenService:Create(KeybindButton, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(40,40,40)}):Play()
-			end)
+			
+			if options["Locked"] == true then
+				local LockedParts = {}
+				LockedParts["28"] = Instance.new("Frame", KeybindButton);
+				LockedParts["28"]["BorderSizePixel"] = 0;
+				LockedParts["28"]["BackgroundColor3"] = Color3.fromRGB(48, 0, 0);
+				LockedParts["28"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["28"]["BackgroundTransparency"] = 0.25;
+				LockedParts["28"]["Size"] = UDim2.new(1, 0, 1, 0);
+				LockedParts["28"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				LockedParts["28"]["Position"] = UDim2.new(0.5, 0, 0.5, 0);
+				LockedParts["28"]["Name"] = [[LockedFrame]];
 
-			KeybindButton.MouseLeave:Connect(function()
-				TweenService:Create(KeybindButton, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(35,35,35)}):Play()
-			end)
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.UICorner
+				LockedParts["29"] = Instance.new("UICorner", LockedParts["28"]);
+				LockedParts["29"]["CornerRadius"] = UDim.new(0, 4);
 
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.UIStroke
+				LockedParts["2a"] = Instance.new("UIStroke", LockedParts["28"]);
+				LockedParts["2a"]["Color"] = Color3.fromRGB(95, 0, 0);
+				LockedParts["2a"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.TextLabel
+				LockedParts["2b"] = Instance.new("TextLabel", LockedParts["28"]);
+				LockedParts["2b"]["TextWrapped"] = true;
+				LockedParts["2b"]["BorderSizePixel"] = 0;
+				LockedParts["2b"]["TextScaled"] = true;
+				LockedParts["2b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+				LockedParts["2b"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
+				LockedParts["2b"]["TextSize"] = 14;
+				LockedParts["2b"]["TextColor3"] = Color3.fromRGB(201, 201, 201);
+				LockedParts["2b"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["2b"]["Size"] = UDim2.new(1, 0, 0, 15);
+				LockedParts["2b"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				LockedParts["2b"]["Text"] = [[xurel]];
+				LockedParts["2b"]["BackgroundTransparency"] = 1;
+				LockedParts["2b"]["Position"] = UDim2.new(0.5, 0, 0.5, 9);
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.lock
+				LockedParts["2c"] = Instance.new("ImageButton", LockedParts["28"]);
+				LockedParts["2c"]["ZIndex"] = 1;
+				LockedParts["2c"]["BorderSizePixel"] = 0;
+				LockedParts["2c"]["ImageColor3"] = Color3.fromRGB(201, 201, 201);
+				LockedParts["2c"]["LayoutOrder"] = 1;
+				LockedParts["2c"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["2c"]["Image"] = [[rbxassetid://3926305904]];
+				LockedParts["2c"]["ImageRectSize"] = Vector2.new(36, 36);
+				LockedParts["2c"]["Size"] = UDim2.new(0, 18, 0, 18);
+				LockedParts["2c"]["Name"] = [[lock]];
+				LockedParts["2c"]["ImageRectOffset"] = Vector2.new(4, 684);
+				LockedParts["2c"]["Position"] = UDim2.new(0.5, 0, 0.5, -6);
+				LockedParts["2c"]["BackgroundTransparency"] = 1;
+
+				local LockedFrame = LockedParts["28"]
+				local LockedText = LockedParts["2b"]
+
+				LockedText.Text = options["LockedText"]
+
+				LockedFrame.MouseEnter:Connect(function()
+					TweenService:Create(LockedFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(55, 0, 0)}):Play()
+				end)
+				LockedFrame.MouseLeave:Connect(function()
+					TweenService:Create(LockedFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(47, 0, 0)}):Play()
+				end)
+
+				return
+			end
+			
 			KeybindChangeButton:GetPropertyChangedSignal("Text"):Connect(function()
 				if KeybindChangeButton.Text == "..." or KeybindChangeButton.Text == "Keybind" then
 					KeybindChangeButton.TextColor3 = Color3.fromRGB(178,178,178)
@@ -1925,6 +2291,15 @@ function Library:Create(options)
 				TweenService:Create(KeybindChangeButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, KeybindChangeButton.TextBounds.X + 24, 0, 30)}):Play()
 			end)
 
+			KeybindButton.MouseEnter:Connect(function()
+				TweenService:Create(KeybindButton, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(40,40,40)}):Play()
+			end)
+
+			KeybindButton.MouseLeave:Connect(function()
+				TweenService:Create(KeybindButton, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(35,35,35)}):Play()
+			end)
+
+			
 			KeybindChangeButton.MouseButton1Down:Connect(function()
 				if Debounce == true then return end
 				Debounce = true
@@ -1960,7 +2335,9 @@ function Library:Create(options)
 						coroutine.wrap(function()
 							local succ, err = pcall(options["Callback"])
 							if not succ then
-								print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+								if devMode == true then
+									print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+								end
 							end
 						end)()
 					end
@@ -1982,7 +2359,9 @@ function Library:Create(options)
 				end)
 				if not succ then
 					pcall(function()
-						print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						if devMode == true then
+							print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						end
 						delfolder(SaveFolder) -- wipe save if data is corrupted
 					end)
 				end
@@ -1999,7 +2378,9 @@ function Library:Create(options)
 				CallbackEnd = function()
 
 				end,
-				Flag = nil
+				Flag = nil,
+				Locked = nil,
+				LockedText = "Premium Only"
 			}, options or {})
 
 			local KeybindToggleParts = {}
@@ -2201,6 +2582,73 @@ function Library:Create(options)
 			local ToggleCircleStroke = KeybindToggleParts["73"]
 			local ToggleCircle = KeybindToggleParts["72"]
 			local KeybindChangeButton = KeybindToggleParts["79"]
+			
+			if options["Locked"] == true then
+				local LockedParts = {}
+				LockedParts["28"] = Instance.new("Frame", KeybindToggleButton);
+				LockedParts["28"]["BorderSizePixel"] = 0;
+				LockedParts["28"]["BackgroundColor3"] = Color3.fromRGB(48, 0, 0);
+				LockedParts["28"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["28"]["BackgroundTransparency"] = 0.25;
+				LockedParts["28"]["Size"] = UDim2.new(1, 0, 1, 0);
+				LockedParts["28"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				LockedParts["28"]["Position"] = UDim2.new(0.5, 0, 0.5, 0);
+				LockedParts["28"]["Name"] = [[LockedFrame]];
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.UICorner
+				LockedParts["29"] = Instance.new("UICorner", LockedParts["28"]);
+				LockedParts["29"]["CornerRadius"] = UDim.new(0, 4);
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.UIStroke
+				LockedParts["2a"] = Instance.new("UIStroke", LockedParts["28"]);
+				LockedParts["2a"]["Color"] = Color3.fromRGB(95, 0, 0);
+				LockedParts["2a"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.TextLabel
+				LockedParts["2b"] = Instance.new("TextLabel", LockedParts["28"]);
+				LockedParts["2b"]["TextWrapped"] = true;
+				LockedParts["2b"]["BorderSizePixel"] = 0;
+				LockedParts["2b"]["TextScaled"] = true;
+				LockedParts["2b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+				LockedParts["2b"]["FontFace"] = Font.new([[rbxassetid://11702779517]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal);
+				LockedParts["2b"]["TextSize"] = 14;
+				LockedParts["2b"]["TextColor3"] = Color3.fromRGB(201, 201, 201);
+				LockedParts["2b"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["2b"]["Size"] = UDim2.new(1, 0, 0, 15);
+				LockedParts["2b"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+				LockedParts["2b"]["Text"] = [[xurel]];
+				LockedParts["2b"]["BackgroundTransparency"] = 1;
+				LockedParts["2b"]["Position"] = UDim2.new(0.5, 0, 0.5, 9);
+
+				-- StarterGui.Solar Library.Main.Tabs.Tab Example.ScrollingFrame.TextButton.LockedFrame.lock
+				LockedParts["2c"] = Instance.new("ImageButton", LockedParts["28"]);
+				LockedParts["2c"]["ZIndex"] = 1;
+				LockedParts["2c"]["BorderSizePixel"] = 0;
+				LockedParts["2c"]["ImageColor3"] = Color3.fromRGB(201, 201, 201);
+				LockedParts["2c"]["LayoutOrder"] = 1;
+				LockedParts["2c"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+				LockedParts["2c"]["Image"] = [[rbxassetid://3926305904]];
+				LockedParts["2c"]["ImageRectSize"] = Vector2.new(36, 36);
+				LockedParts["2c"]["Size"] = UDim2.new(0, 18, 0, 18);
+				LockedParts["2c"]["Name"] = [[lock]];
+				LockedParts["2c"]["ImageRectOffset"] = Vector2.new(4, 684);
+				LockedParts["2c"]["Position"] = UDim2.new(0.5, 0, 0.5, -6);
+				LockedParts["2c"]["BackgroundTransparency"] = 1;
+
+				local LockedFrame = LockedParts["28"]
+				local LockedText = LockedParts["2b"]
+
+				LockedText.Text = options["LockedText"]
+
+				LockedFrame.MouseEnter:Connect(function()
+					TweenService:Create(LockedFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(55, 0, 0)}):Play()
+				end)
+				LockedFrame.MouseLeave:Connect(function()
+					TweenService:Create(LockedFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(47, 0, 0)}):Play()
+				end)
+
+				return
+			end
 
 			Title.Text = options["Name"]
 			KeybindToggleButton.Name = options["Name"]..tostring(math.random(1,99999999))
@@ -2286,7 +2734,9 @@ function Library:Create(options)
 								ScriptDebounce = true
 								local succ, err = pcall(options["Callback"])
 								if not succ then
-									print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+									if devMode == true then
+										print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+									end
 									Enabled = false
 									local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
 									Tween:Play()
@@ -2305,7 +2755,9 @@ function Library:Create(options)
 						coroutine.wrap(function()
 							local succ, err = pcall(options["CallbackEnd"])
 							if not succ then
-								print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+								if devMode == true then
+									print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+								end
 							end
 							WaitingForEnd = false
 						end)()
@@ -2349,7 +2801,9 @@ function Library:Create(options)
 									ScriptDebounce = true
 									local succ, err = pcall(options["Callback"])
 									if not succ then
-										print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+										if devMode == true then
+											print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+										end
 										Enabled = false
 										local Tween = TweenService:Create(ToggleCircle, TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0,15,0,15)})
 										Tween:Play()
@@ -2368,7 +2822,9 @@ function Library:Create(options)
 							coroutine.wrap(function()
 								local succ, err = pcall(options["CallbackEnd"])
 								if not succ then
-									print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+									if devMode == true then
+										print("(SOLAR LIBRARY) CAUGHT ERROR: "..err)
+									end
 								end
 								WaitingForEnd = false
 							end)()
@@ -2383,7 +2839,9 @@ function Library:Create(options)
 				end)
 				if not succ then
 					pcall(function()
-						print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						if devMode == true then
+							print("(SOLAR LIBRARY): There was a corruption in your save file. This could be related to the script being formatted improperly (may need to use flags, or improper use of flags). Your save has been wiped.")
+						end
 						delfolder(SaveFolder) -- wipe save if data is corrupted
 					end)
 				end
