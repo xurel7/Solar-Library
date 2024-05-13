@@ -3,6 +3,12 @@ Below are all updates that have been pushed to Solar Library.
 
 For documentation, view [here](https://github.com/xurel7/Solar-Library/blob/main/documentation.md).
 
+## Update V1.0.8
+Added a Locked variable which will lock certain features. Can be used to lock features that arent done/premium only features.
+Added a LockedText variable which allows you to say why the feature is locked. Example: "Locked. Premium Only!"
+
+*Update pushed: May 12th, 2024*
+
 ## Update V1.0.7
 Added a new function: LabelName:UpdateText{Text = "New Text"}, can be used to update a TextLabel. A case where this could be used is for a target specific player section.
 
