@@ -34,6 +34,12 @@ local LocalPlayer = Players.LocalPlayer
 if RunService:IsStudio() then
 	Par = LocalPlayer:WaitForChild("PlayerGui")
 end
+pcall(function()
+    local executor = identifyexecutor()
+    if string.find(executor, "incognito") then
+        Par = game:GetService("CoreGui")
+    end
+end)
 
 local ToggleKeybind = Enum.KeyCode.RightControl
 
