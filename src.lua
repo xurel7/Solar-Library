@@ -1386,43 +1386,40 @@ function Library:Create(options)
 
 
 			function PageParts:GetInput()
-				if InputBox.Text == nil or not InputBox.Text or InputBox.Text == "" then
-					return
-				end
-				if options["InputType"] and options["InputType"] ~= nil then
-					local Type = options["InputType"]:lower()
-					if string.find(Type, "number") then
-						local NumberToReturn
+	if InputBox.Text == nil or InputBox.Text == "" then
+		return
+	end
 
-						local a = InputBox.Text:gsub("%D","")
-						if not tonumber(a) then return end
-						if string.find(InputBox.Text:sub(1,1),"-") then
-							a = -a
-						end
-						local Num = tonumber(a)
+	if options["InputType"] and options["InputType"]:lower():find("number") then
+		local input = InputBox.Text:match("[-%d%.]+")
+		local num = tonumber(input)
 
-						if options["MaxNumber"] and options["MaxNumber"] ~= nil and tonumber(options["MaxNumber"]) ~= nil and Num and Num ~= nil then
-							if Num >= options["MaxNumber"] then
-								Num = tonumber(options["MaxNumber"])
-							end
-						end
-						if options["MinNumber"] and options["MinNumber"] ~= nil and tonumber(options["MinNumber"]) ~= nil and Num and Num ~= nil then
-							if Num <= options["MinNumber"] then
-								Num = tonumber(options["MinNumber"])
-							end
-						end
-						if options["MinNumber"] and options["MinNumber"] ~= nil and tonumber(options["MinNumber"]) ~= nil and options["MaxNumber"] and options["MaxNumber"] ~= nil and tonumber(options["MaxNumber"]) ~= nil then
-							if options["MinNumber"] >= options["MaxNumber"] then
-								NumberToReturn = tonumber(a)
-							end
-						end
+		if not num then return end
 
-						NumberToReturn = Num
-						return NumberToReturn
-					end
-				end
-				return InputBox.Text
+		if options["MaxNumber"] and tonumber(options["MaxNumber"]) then
+			if num > tonumber(options["MaxNumber"]) then
+				num = tonumber(options["MaxNumber"])
 			end
+		end
+
+		if options["MinNumber"] and tonumber(options["MinNumber"]) then
+			if num < tonumber(options["MinNumber"]) then
+				num = tonumber(options["MinNumber"])
+			end
+		end
+
+		if options["MinNumber"] and tonumber(options["MinNumber"])
+			and options["MaxNumber"] and tonumber(options["MaxNumber"]) then
+			if tonumber(options["MinNumber"]) >= tonumber(options["MaxNumber"]) then
+				return tonumber(input)
+			end
+		end
+
+		return num
+	end
+
+	return InputBox.Text
+end
 
 			return PageParts
 		end
@@ -1965,44 +1962,41 @@ function Library:Create(options)
 
 			end)
 
-			function InputToggleParts:GetInput()
-				if InputTextBox.Text == nil or not InputTextBox.Text or InputTextBox.Text == "" then
-					return
-				end
-				if options["InputType"] and options["InputType"] ~= nil then
-					local Type = options["InputType"]:lower()
-					if string.find(Type, "number") then
-						local NumberToReturn
+			function PageParts:GetInput()
+	if InputBox.Text == nil or InputBox.Text == "" then
+		return
+	end
 
-						local a = InputTextBox.Text:gsub("%D","")
-						if not tonumber(a) then return end
-						if string.find(InputTextBox.Text:sub(1,1),"-") then
-							a = -a
-						end
-						local Num = tonumber(a)
+	if options["InputType"] and options["InputType"]:lower():find("number") then
+		local input = InputBox.Text:match("[-%d%.]+")
+		local num = tonumber(input)
 
-						if options["MaxNumber"] and options["MaxNumber"] ~= nil and tonumber(options["MaxNumber"]) ~= nil and Num and Num ~= nil then
-							if Num >= options["MaxNumber"] then
-								Num = tonumber(options["MaxNumber"])
-							end
-						end
-						if options["MinNumber"] and options["MinNumber"] ~= nil and tonumber(options["MinNumber"]) ~= nil and Num and Num ~= nil then
-							if Num <= options["MinNumber"] then
-								Num = tonumber(options["MinNumber"])
-							end
-						end
-						if options["MinNumber"] and options["MinNumber"] ~= nil and tonumber(options["MinNumber"]) ~= nil and options["MaxNumber"] and options["MaxNumber"] ~= nil and tonumber(options["MaxNumber"]) ~= nil then
-							if options["MinNumber"] >= options["MaxNumber"] then
-								NumberToReturn = tonumber(a)
-							end
-						end
+		if not num then return end
 
-						NumberToReturn = Num
-						return NumberToReturn
-					end
-				end
-				return InputTextBox.Text
+		if options["MaxNumber"] and tonumber(options["MaxNumber"]) then
+			if num > tonumber(options["MaxNumber"]) then
+				num = tonumber(options["MaxNumber"])
 			end
+		end
+
+		if options["MinNumber"] and tonumber(options["MinNumber"]) then
+			if num < tonumber(options["MinNumber"]) then
+				num = tonumber(options["MinNumber"])
+			end
+		end
+
+		if options["MinNumber"] and tonumber(options["MinNumber"])
+			and options["MaxNumber"] and tonumber(options["MaxNumber"]) then
+			if tonumber(options["MinNumber"]) >= tonumber(options["MaxNumber"]) then
+				return tonumber(input)
+			end
+		end
+
+		return num
+	end
+
+	return InputBox.Text
+end
 
 			if SaveFolder ~= nil then
 				local succ, err = pcall(function()
