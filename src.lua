@@ -1,5 +1,7 @@
 --[[
 
+2025-05-04 -> please do not use this shitty ass ui lib, the code is terrible & uneditable. no idea wtf i was doing
+
 ███████  ██████  ██       █████  ██████      ██      ██ ██████
 ██      ██    ██ ██      ██   ██ ██   ██     ██      ██ ██   ██
 ███████ ██    ██ ██      ███████ ██████      ██      ██ ██████
@@ -1394,8 +1396,11 @@ function Library:Create(options)
 					if string.find(Type, "number") then
 						local NumberToReturn
 
-						local a = InputBox.Text:match("[-%d%.]+")
+						local a = InputBox.Text:gsub("%D","")
 						if not tonumber(a) then return end
+						if string.find(InputBox.Text:sub(1,1),"-") then
+							a = -a
+						end
 						local Num = tonumber(a)
 
 						if options["MaxNumber"] and options["MaxNumber"] ~= nil and tonumber(options["MaxNumber"]) ~= nil and Num and Num ~= nil then
@@ -1971,8 +1976,11 @@ function Library:Create(options)
 					if string.find(Type, "number") then
 						local NumberToReturn
 
-						local a = InputTextBox.Text:match("[-%d%.]+")
+						local a = InputTextBox.Text:gsub("%D","")
 						if not tonumber(a) then return end
+						if string.find(InputTextBox.Text:sub(1,1),"-") then
+							a = -a
+						end
 						local Num = tonumber(a)
 
 						if options["MaxNumber"] and options["MaxNumber"] ~= nil and tonumber(options["MaxNumber"]) ~= nil and Num and Num ~= nil then
