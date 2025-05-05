@@ -1396,7 +1396,7 @@ function Library:Create(options)
 					if string.find(Type, "number") then
 						local NumberToReturn
 
-						local a = InputBox.Text:gsub("%D","")
+						local a = InputBox.Text:match("[-%d%.]+")
 						if not tonumber(a) then return end
 						if string.find(InputBox.Text:sub(1,1),"-") then
 							a = -a
@@ -1976,7 +1976,7 @@ function Library:Create(options)
 					if string.find(Type, "number") then
 						local NumberToReturn
 
-						local a = InputTextBox.Text:gsub("%D","")
+						local a = InputTextBox.Text:match("[-%d%.]+")
 						if not tonumber(a) then return end
 						if string.find(InputTextBox.Text:sub(1,1),"-") then
 							a = -a
