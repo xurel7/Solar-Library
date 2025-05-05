@@ -1398,9 +1398,6 @@ function Library:Create(options)
 
 						local a = InputBox.Text:match("[-%d%.]+")
 						if not tonumber(a) then return end
-						if string.find(InputBox.Text:sub(1,1),"-") then
-							a = -a
-						end
 						local Num = tonumber(a)
 
 						if options["MaxNumber"] and options["MaxNumber"] ~= nil and tonumber(options["MaxNumber"]) ~= nil and Num and Num ~= nil then
@@ -1978,9 +1975,6 @@ function Library:Create(options)
 
 						local a = InputTextBox.Text:match("[-%d%.]+")
 						if not tonumber(a) then return end
-						if string.find(InputTextBox.Text:sub(1,1),"-") then
-							a = -a
-						end
 						local Num = tonumber(a)
 
 						if options["MaxNumber"] and options["MaxNumber"] ~= nil and tonumber(options["MaxNumber"]) ~= nil and Num and Num ~= nil then
